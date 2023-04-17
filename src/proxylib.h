@@ -120,7 +120,7 @@
 // Public parameters (shared among all users in a system)
 class CurveParams {
  public:
-  int bits;
+  int bits_c;
   Big p, q, qsquared;
   ECn P;  
   ZZn2 Z;
@@ -135,11 +135,11 @@ class CurveParams {
   virtual int maxPlaintextSize() {
     Big temp;
     this->Z.get(temp);
-    return ::bits(temp);
+    return bits(temp);
   }
 
   BOOL operator==(CurveParams &second) {
-    return ((this->bits == second.bits) && 
+    return ((this->bits_c == second.bits_c) && 
 	    (this->p == second.p) &&
 	    (this->q == second.q) &&
 	    (this->qsquared == second.qsquared) &&

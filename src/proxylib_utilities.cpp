@@ -483,18 +483,19 @@ void g(ECn& A,ECn& B,ZZn2& Qx,ZZn2& Qy,ZZn2& num)
 {
     ZZn  lam,mQy;
     ZZn2 d,u;
-    big ptr;
+    int ptr;
     ECn P=A;
 
 // Evaluate line from A
-    ptr=A.add(B);
+    big n=0;
+    ptr=A.add(B,&n);
 
 #ifndef SCOTT
     if (A.iszero())   { u=vertical(P,Qx); d=1; }
     else
     {
 #endif
-        if (ptr==NULL) u=1;
+        if (ptr==0) u=1;
         else 
         {
             lam=ptr;
@@ -929,7 +930,7 @@ CurveParams::serialize(SERIALIZE_MODE mode, char *buffer, int maxBuffer)
     //ZZn2 Zprecomp;
     //ZZn2 cube;
     
-    Big bbits = this->bits;
+    Big bbits = this->bits_c;
     int size = BigTochar(bbits, buffer, maxBuffer);
     if (size <= 0) return 0;
     totSize += size;
@@ -993,7 +994,7 @@ CurveParams::deserialize(SERIALIZE_MODE mode, char *buffer, int bufSize)
     //ZZn2 cube;
     
     int len;
-    this->bits = toint(charToBig(buffer, &len));
+    this->bits_c = toint(charToBig(buffer, &len));
     if (len <= 0) return FALSE;
     buffer += len;
 
