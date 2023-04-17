@@ -1,6 +1,4 @@
-CFLAGS += -I/usr/src/linux-headers-$(uname -r)/include
-
-MIRACLPATH = ../../miracl
+MIRACLPATH = ../miracl
 CC = g++
 CCFLAGS = -I${MIRACLPATH} -O2  
 CCLIBS = -lstdc++
