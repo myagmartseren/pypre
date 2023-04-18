@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "*.tmpl": "html",
-        "*.tcc": "cpp",
-        "compare": "cpp",
-        "sstream": "cpp",
-        "streambuf": "cpp"
-    }
-}
