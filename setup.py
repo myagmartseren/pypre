@@ -4,7 +4,7 @@ from setuptools import Extension, setup
 module = Extension("pypre",
                 language="c++",
                 sources=[f for f in glob.glob('src/*.c')]+['external/proxylib/proxylib_pre1.cpp'],
-                extra_compile_args=["-I./external/miracl", "-O2", "-v"],
+                extra_compile_args=["-I./external/miracl/include", "-L./external/miracl/lib"],
                 include_dirs=['external/miracl'],
                 libraries=["miracl"],
                 compiler="g++"
