@@ -1,4 +1,4 @@
-name: Sonic python package
+name: Proxy re-encryption python package
 
 on: [push]
 
