@@ -476,7 +476,7 @@ BOOL PRE1_decrypt(CurveParams &params, ProxyCiphertext_PRE1 &ciphertext, ProxySK
 int
 SerializeDelegationKey_PRE1(DelegationKey_PRE1 &delKey, SERIALIZE_MODE mode, char *buffer, int maxBuffer)
 {
-  int totSize = 0;
+  // int totSize = 0;
 
   // Set base-16 ASCII encoding
   miracl *mip=&precision;
