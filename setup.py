@@ -12,7 +12,7 @@ module = Extension("pypre",
                library_dirs=['external/miracl','external/proxylib'],
                extra_link_args=['-Lexternal/miracl'],
                # extra_link_args=['-Wl,--export-dynamic'],
-               libraries=["external/miracl/miracl.a"]
+               libraries=["external/miracl/miracl.a",'proxylib']
 )
 
 setup(name='pypre',
