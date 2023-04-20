@@ -99,6 +99,7 @@
 #include "ecn.h"
 #include "ebrick.h"
 #include "zzn2.h"
+#include "proxylib_api.h"
 
 //
 // Macros
