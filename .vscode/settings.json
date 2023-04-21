@@ -1,6 +1,0 @@
-{
-    "files.associations": {
-        "*.tmpl": "html",
-        "proxylib.h": "c"
-    }
-}

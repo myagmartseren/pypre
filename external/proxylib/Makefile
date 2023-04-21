@@ -3,6 +3,7 @@ CC = g++
 CCFLAGS = -I${MIRACLPATH} -O2  
 CCLIBS = -lstdc++
 AR = ar
+LIBTYPE=lib
 ARARGS = rcs
 PROXYLIB = proxylib.a
 PROXYLIBWITHMIRACL = proxylibmiracl.a
