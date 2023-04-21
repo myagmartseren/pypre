@@ -1,6 +1,6 @@
 MIRACLPATH = ../miracl
 CC = g++
-CCFLAGS = -I${MIRACLPATH} -O2  
+CCFLAGS = -I${MIRACLPATH} -O2 -fPIC
 CCLIBS = -lstdc++
 AR = ar
 LIBTYPE=lib
