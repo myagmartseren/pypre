@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "*.tmpl": "html",
+        "iostream": "cpp",
+        "*.tcc": "cpp",
+        "compare": "cpp",
+        "fstream": "cpp",
+        "limits": "cpp"
+    }
+}

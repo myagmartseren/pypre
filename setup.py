@@ -13,7 +13,7 @@ module = Extension(
     include_dirs=["external/miracl", "external/proxylib"],
     library_dirs=["external/miracl", "external/proxylib"],
     libraries=["miracl", "proxylib"],
-#     extra_objects=['external/miracl/libmiracl.a','external/proxylib/libproxylib.a']
+    extra_objects=['external/miracl/libmiracl.a','external/proxylib/libproxylib.a']
 )
 
 setup(name='pypre',
