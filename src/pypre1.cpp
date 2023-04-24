@@ -73,7 +73,7 @@ static PyTypeObject PyCurveParamsType = {
     0,                                                     /* tp_iternext */
     PyCurveParams_methods,                                 /* tp_methods */
     0,                                                     /* tp_members */
-    PyCurveParams_getsetters,                                                     /* tp_getset */
+    PyCurveParams_getsetters,                              /* tp_getset */
     0,                                                     /* tp_base */
     0,                                                     /* tp_dict */
     0,                                                     /* tp_descr_get */
@@ -268,6 +268,7 @@ typedef struct
 #pragma region Module functions
 
 static PyObject* PyPRE1_generate_params(PyObject *self, PyObject *args) {
+    
     if (PyTuple_Size(args) !=1){
         PyErr_SetString(PyExc_RuntimeError, "Should have CurveParams");
         return Py_None;
@@ -282,13 +283,14 @@ static PyObject* PyPRE1_generate_params(PyObject *self, PyObject *args) {
 
     PyCurveParams *curveParams = (PyCurveParams *)PyTuple_GetItem(args, 0);
 
-    if (!PRE1_generate_params(*curveParams->curveParams)) {
+    int result = PRE1_generate_params(*curveParams->curveParams);
+    if (!result) {
         PyErr_SetString(PyExc_RuntimeError, "Failed to generate params");
-        return Py_None;
+        return PyBool_FromLong(result);
     }
 
     Py_INCREF(Py_None);
-    return Py_None;
+    return PyBool_FromLong(result);
 }
 
 

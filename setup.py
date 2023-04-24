@@ -9,7 +9,7 @@ os.environ["CXX"] = "g++"
 module = Extension(
     "pypre",
     language="c++",
-    sources=["src/pypre.cpp",'external/proxylib/proxylib_pre1.cpp'],
+    sources=[f for f in glob.glob('src/*.cpp')]+['external/proxylib/proxylib_pre1.cpp'],
     include_dirs=["external/miracl", "external/proxylib"],
     library_dirs=["external/miracl", "external/proxylib"],
     libraries=["miracl", "proxylib"],
