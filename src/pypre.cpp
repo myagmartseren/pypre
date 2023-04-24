@@ -8,12 +8,12 @@
 typedef struct
 {
     PyObject_HEAD
-    CurveParams *curveParams;
+    CurveParams *params;
 } PyCurveParams;
 
 static void PyCurveParams_dealloc(PyCurveParams *self)
 {
-    delete self->curveParams;
+    delete self->params;
     Py_TYPE(self)->tp_free((PyObject*)self);
 }
 
@@ -23,7 +23,7 @@ static PyObject *PyCurveParams_new(PyTypeObject *type, PyObject *args, PyObject 
     self = (PyCurveParams *)type->tp_alloc(type, 0);
     if (self != NULL)
     {
-        self->curveParams = new CurveParams();
+        self->params = new CurveParams();
     }
     return (PyObject *)self;
 }
@@ -31,7 +31,7 @@ static PyObject *PyCurveParams_new(PyTypeObject *type, PyObject *args, PyObject 
 
 static int PyCurveParams_init(PyCurveParams *self, PyObject *args, PyObject *kwds)
 {
-    self->curveParams = new CurveParams();
+    self->params = new CurveParams();
     return 0;
 }
 
@@ -94,28 +94,27 @@ static int PyCurveParams_Check(PyObject *obj) {
 typedef struct
 {
     PyObject_HEAD
-    ProxyPK_PRE1 *proxyPK_PRE1;
+    ProxyPK_PRE1 *publicKey;
 } PyProxyPK_PRE1;
 
 static void PyProxyPK_PRE1_dealloc(PyProxyPK_PRE1 *self)
 {
+    delete self->publicKey;
     Py_TYPE(self)->tp_free((PyObject *)self);
 }
 
-static PyObject *PyProxyPK_PRE1_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
-{
+static PyObject* PyProxyPK_PRE1_New(PyTypeObject *type, PyObject *args, PyObject *kwds) {
     PyProxyPK_PRE1 *self;
     self = (PyProxyPK_PRE1 *)type->tp_alloc(type, 0);
-    if (self != NULL)
-    {
-        self->proxyPK_PRE1 = new ProxyPK_PRE1();
+    if (self != NULL) {
+        self->publicKey = new ProxyPK_PRE1();
     }
     return (PyObject *)self;
 }
 
 static int PyProxyPK_PRE1_init(PyProxyPK_PRE1 *self, PyObject *args, PyObject *kwds)
 {
-    self->proxyPK_PRE1 = new ProxyPK_PRE1();
+    self->publicKey = new ProxyPK_PRE1();
     return 0;
 }
 static PyMethodDef PyProxyPK_PRE1_methods[] = {
@@ -125,6 +124,7 @@ static PyMethodDef PyProxyPK_PRE1_methods[] = {
 static PyGetSetDef PyProxyPK_PRE1_getsetters[] = {
     {NULL} /* Sentinel */
 };
+
 static PyTypeObject PyProxyPK_PRE1Type = {
     PyVarObject_HEAD_INIT(NULL, 0) "proxylib.ProxyPK_PRE1",/* tp_name */
     sizeof(PyProxyPK_PRE1),                                /* tp_basicsize */
@@ -162,8 +162,12 @@ static PyTypeObject PyProxyPK_PRE1Type = {
     0,                                                     /* tp_dictoffset */
     (initproc)PyProxyPK_PRE1_init,                         /* tp_init */
     0,                                                     /* tp_alloc */
-    PyProxyPK_PRE1_new                                     /* tp_new */
+    PyProxyPK_PRE1_New                                     /* tp_new */
 };
+
+static int PyProxyPK_PRE1_Check(PyObject *obj) {
+    return PyObject_IsInstance(obj, (PyObject*)&PyProxyPK_PRE1Type);
+}
 
 #pragma endregion Proxy PK PRE1
 
@@ -171,29 +175,27 @@ static PyTypeObject PyProxyPK_PRE1Type = {
 typedef struct
 {
     PyObject_HEAD
-    ProxySK_PRE1 *proxySK_PRE1;
+    ProxySK_PRE1 *secretKey;
 } PyProxySK_PRE1;
 
-
-static void PyProxySK_PRE1_dealloc(PyCurveParams *self)
+static void PyProxySK_PRE1_dealloc(PyProxySK_PRE1 *self)
 {
+    delete self->secretKey;
     Py_TYPE(self)->tp_free((PyObject *)self);
 }
 
-static PyObject *PyProxySK_PRE1_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
-{
+static PyObject* PyProxySK_PRE1_New(PyTypeObject *type, PyObject *args, PyObject *kwds) {
     PyProxySK_PRE1 *self;
     self = (PyProxySK_PRE1 *)type->tp_alloc(type, 0);
-    if (self != NULL)
-    {
-        self->proxySK_PRE1 = new ProxySK_PRE1();
+    if (self != NULL) {
+        self->secretKey = new ProxySK_PRE1();
     }
     return (PyObject *)self;
 }
 
 static int PyProxySK_PRE1_init(PyProxySK_PRE1 *self, PyObject *args, PyObject *kwds)
 {
-    self->proxySK_PRE1 = new ProxySK_PRE1();
+    self->secretKey = new ProxySK_PRE1();
     return 0;
 }
 
@@ -210,7 +212,7 @@ static PyTypeObject PyProxySK_PRE1Type = {
     PyVarObject_HEAD_INIT(NULL, 0) "proxylib.ProxySK_PRE1", /* tp_name */
     sizeof(PyCurveParams),                                 /* tp_basicsize */
     0,                                                     /* tp_itemsize */
-    (destructor)PyCurveParams_dealloc,                     /* tp_dealloc */
+    (destructor)PyProxySK_PRE1_dealloc,                     /* tp_dealloc */
     0,                                                     /* tp_print */
     0,                                                     /* tp_getattr */
     0,                                                     /* tp_setattr */
@@ -243,8 +245,13 @@ static PyTypeObject PyProxySK_PRE1Type = {
     0,                                                     /* tp_dictoffset */
     (initproc)PyProxySK_PRE1_init,                          /* tp_init */
     0,                                                     /* tp_alloc */
-    PyProxySK_PRE1_new                                      /* tp_new */
+    PyProxySK_PRE1_New                                      /* tp_new */
 };
+
+static int PyProxySK_PRE1_Check(PyObject *obj) {
+    return PyObject_IsInstance(obj, (PyObject*)&PyProxySK_PRE1Type);
+}
+
 #pragma endregion Proxy SK PRE1
 
 #pragma region ECn
@@ -265,25 +272,24 @@ typedef struct
 
 #pragma endregion Proxy Ciphertext PRE1
 
-#pragma region Module functions
+#pragma region PRE 1 Functions
 
 static PyObject* PyPRE1_generate_params(PyObject *self, PyObject *args) {
-    
     if (PyTuple_Size(args) !=1){
         PyErr_SetString(PyExc_RuntimeError, "Should have CurveParams");
         return Py_None;
     }
 
-    PyObject *arg = PyTuple_GetItem(args, 0);
+    PyObject *params = PyTuple_GetItem(args, 0);
 
-    if (!PyCurveParams_Check(arg)) {
+    if (!PyCurveParams_Check(params)) {
         PyErr_SetString(PyExc_RuntimeError, "Failed to cast CurveParams");
         return Py_None;
     }
 
-    PyCurveParams *curveParams = (PyCurveParams *)PyTuple_GetItem(args, 0);
+    PyCurveParams *pyParams = (PyCurveParams *)params;
 
-    int result = PRE1_generate_params(*curveParams->curveParams);
+    int result = PRE1_generate_params(*pyParams->params);
     if (!result) {
         PyErr_SetString(PyExc_RuntimeError, "Failed to generate params");
         return PyBool_FromLong(result);
@@ -293,37 +299,50 @@ static PyObject* PyPRE1_generate_params(PyObject *self, PyObject *args) {
     return PyBool_FromLong(result);
 }
 
-
 static PyObject* PyPRE1_keygen(PyObject *self, PyObject *args) {
     if (PyTuple_Size(args) !=3){
-        PyErr_SetString(PyExc_RuntimeError, "Should have CurveParams");
+        PyErr_SetString(PyExc_RuntimeError, "Should have 3 parameters");
         return Py_None;
     }
 
-    PyObject *arg = PyTuple_GetItem(args, 0);
-
-    if (!PyCurveParams_Check(arg)) {
+    PyObject *tempParams = PyTuple_GetItem(args, 0);
+    if (!PyCurveParams_Check(tempParams)) {
         PyErr_SetString(PyExc_RuntimeError, "Failed to cast CurveParams");
         return Py_None;
     }
+    PyCurveParams *pyParams = (PyCurveParams *)tempParams;
+    printf("pyParams->params address: %p\n", pyParams->params);
 
-    PyCurveParams *curveParams = (PyCurveParams *)PyTuple_GetItem(args, 0);
-
-    if (!PRE1_generate_params(*curveParams->curveParams)) {
-        PyErr_SetString(PyExc_RuntimeError, "Failed to generate params");
+    PyObject *tempPublicKey = PyTuple_GetItem(args, 1);
+    if (!PyProxyPK_PRE1_Check(tempPublicKey)) {
+        PyErr_SetString(PyExc_RuntimeError, "Failed to cast PK_PRE1");
         return Py_None;
     }
+    PyProxyPK_PRE1 *pyPublicKey = (PyProxyPK_PRE1 *)tempPublicKey;
+    printf("pyPublicKey->publicKey address: %p\n", pyPublicKey->publicKey);
 
+    PyObject *tempSecretKey = PyTuple_GetItem(args, 2);
+    if (!PyProxySK_PRE1_Check(tempSecretKey)) {
+        PyErr_SetString(PyExc_RuntimeError, "Failed to cast SK_PRE1");
+        return Py_None;
+    }
+    PyProxySK_PRE1 *pySecretKey = (PyProxySK_PRE1 *)tempSecretKey;
+    printf("pySecretKey->secretKey address: %p\n", pySecretKey->secretKey);
+
+    int result = PRE1_keygen(*pyParams->params, *pyPublicKey->publicKey, *pySecretKey->secretKey);
+    
     Py_INCREF(Py_None);
-    return Py_None;
+    return PyBool_FromLong(result);
 }
 
 static PyMethodDef module_methods[] = {
     {"PRE1_generate_params", PyPRE1_generate_params, METH_VARARGS, "Generate curve parameters for the PRE1 scheme."},
+    {"PRE1_keygen", PyPRE1_keygen, METH_VARARGS, "Generate curve parameters for the PRE1 scheme."},
+
     {NULL, NULL, 0, NULL}
 };
 
-#pragma endregion Module functions
+#pragma endregion PRE 1 Functions
 
 #pragma region Main module init
 static struct PyModuleDef module_def = {
