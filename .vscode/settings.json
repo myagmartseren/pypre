@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.tmpl": "html",
+        "*.tcc": "cpp",
+        "compare": "cpp",
+        "type_traits": "cpp"
+    }
+}
