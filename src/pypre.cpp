@@ -2,6 +2,7 @@
 #include <Python.h>
 #include <proxylib.h>
 
+#pragma region Curve Params
 typedef struct
 {
     PyObject_HEAD
@@ -97,6 +98,9 @@ static struct PyModuleDef moduledef = {
         NULL                  // m_free
         */
 };
+#pragma endregion Curve Params
+
+#pragma region Main module init
 PyMODINIT_FUNC PyInit_pypre(void);
 
 PyObject *PyInit_pypre(void)
@@ -122,3 +126,4 @@ PyObject *PyInit_pypre(void)
 
     return module;
 }
+#pragma endregion Main module init
