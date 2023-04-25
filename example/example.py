@@ -5,3 +5,6 @@ pk = pypre.PK_PRE1()
 
 print("generate params",pypre.PRE1_generate_params(params))
 print("key gen", pypre.PRE1_keygen(params,pk,sk))
+# print(pk.zpub1)
+
+print(pk.publicKey)

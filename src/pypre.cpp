@@ -1,8 +1,95 @@
 #define PY_SSIZE_T_CLEAN
+#include <zzn.h>
+#include <miracl.h>
+
 #include <Python.h>
 #include <proxylib.h>
 #include <proxylib_pre1.h>
 
+#pragma region Common types
+typedef struct
+{
+    PyObject_HEAD
+    ZZn2 *zzn2;
+} PyZZn2;
+
+static void PyZZn2_dealloc(PyZZn2 *self)
+{
+    delete self->zzn2;
+    Py_TYPE(self)->tp_free((PyObject*)self);
+}
+
+static PyObject* PyZZn2_New(PyTypeObject* type, PyObject* args, PyObject* kwargs)
+{
+    PyZZn2 *self;
+    self = (PyZZn2 *)type->tp_alloc(type, 0);
+    if (self != NULL)
+    {
+        self->zzn2 = new ZZn2();
+    }
+    return (PyObject *)self;
+}
+
+static int PyZZn2_init(PyZZn2 *self, PyObject *args, PyObject *kwds)
+{
+    self->zzn2 = new ZZn2();
+    return 0;
+}
+
+static PyMethodDef PyZZn2_methods[] = {
+    {NULL} /* Sentinel */
+};
+
+static PyGetSetDef PyZZn2_getsetters[] = {
+    {NULL} /* Sentinel */
+};
+
+// Define the PyTypeObject for PyCurveParams
+static PyTypeObject PyZZn2Type = {
+    PyVarObject_HEAD_INIT(NULL, 0) "proxylib.CurveParams", /* tp_name */
+    sizeof(PyZZn2),                                 /* tp_basicsize */
+    0,                                                     /* tp_itemsize */
+    (destructor)PyZZn2_dealloc,                     /* tp_dealloc */
+    0,                                                     /* tp_print */
+    0,                                                     /* tp_getattr */
+    0,                                                     /* tp_setattr */
+    0,                                                     /* tp_reserved */
+    0,                                                     /* tp_repr */
+    0,                                                     /* tp_as_number */
+    0,                                                     /* tp_as_sequence */
+    0,                                                     /* tp_as_mapping */
+    0,                                                     /* tp_hash  */
+    0,                                                     /* tp_call */
+    0,                                                     /* tp_str */
+    0,                                                     /* tp_getattro */
+    0,                                                     /* tp_setattro */
+    0,                                                     /* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,              /* tp_flags */
+    "ZZn2 object",                                  /* tp_doc */
+    0,                                                     /* tp_traverse */
+    0,                                                     /* tp_clear */
+    0,                                                     /* tp_richcompare */
+    0,                                                     /* tp_weaklistoffset */
+    0,                                                     /* tp_iter */
+    0,                                                     /* tp_iternext */
+    PyZZn2_methods,                                 /* tp_methods */
+    0,                                                     /* tp_members */
+    PyZZn2_getsetters,                              /* tp_getset */
+    0,                                                     /* tp_base */
+    0,                                                     /* tp_dict */
+    0,                                                     /* tp_descr_get */
+    0,                                                     /* tp_descr_set */
+    0,                                                     /* tp_dictoffset */
+    (initproc)PyZZn2_init,                          /* tp_init */
+    0,                                                     /* tp_alloc */
+    PyZZn2_New                                      /* tp_new */
+};
+
+static int PyZZn2_Check(PyObject *obj) {
+    return PyObject_IsInstance(obj, (PyObject*)&PyZZn2Type);
+}
+
+#pragma endregion Common types
 
 #pragma region Curve Params
 typedef struct
@@ -27,7 +114,6 @@ static PyObject *PyCurveParams_new(PyTypeObject *type, PyObject *args, PyObject 
     }
     return (PyObject *)self;
 }
-
 
 static int PyCurveParams_init(PyCurveParams *self, PyObject *args, PyObject *kwds)
 {
@@ -117,12 +203,53 @@ static int PyProxyPK_PRE1_init(PyProxyPK_PRE1 *self, PyObject *args, PyObject *k
     self->publicKey = new ProxyPK_PRE1();
     return 0;
 }
+PyObject* PyProxyPK_PRE1_publicKey_to_python(ProxyPK_PRE1* publicKey) {
+  PyObject* py_publicKey = NULL;
+  if (publicKey != NULL) {
+    cout <<"convert function"<< publicKey->Zpub1;
+    cout <<"convert function"<< publicKey->Ppub2;
+    py_publicKey = Py_BuildValue("(i)", publicKey->Zpub1);
+  }
+  return py_publicKey;
+}
+
+static PyObject* PyProxyPK_PRE1_GetPublicKey(PyProxyPK_PRE1* self) {
+  return PyProxyPK_PRE1_publicKey_to_python(self->publicKey);
+}
+
+ProxyPK_PRE1* PyProxyPK_PRE1_python_to_publicKey(PyObject* py_publicKey) {
+  ProxyPK_PRE1* publicKey = NULL;
+  if (py_publicKey != NULL) {
+    char* zpub1 = NULL;
+    PyArg_ParseTuple(py_publicKey, "s", &zpub1);
+    if (zpub1 != NULL) {
+      publicKey = new ProxyPK_PRE1();
+      publicKey->Zpub1 = zpub1;
+    }
+  }
+  return publicKey;
+}
+
+static void PyProxyPK_PRE1_SetPublicKey(PyProxyPK_PRE1* self, PyObject* publicKey) {
+  self->publicKey = PyProxyPK_PRE1_python_to_publicKey(publicKey);
+}
+
 static PyMethodDef PyProxyPK_PRE1_methods[] = {
     {NULL} /* Sentinel */
 };
 
+ZZn2 PyProxyPK_PRE1_GetZpub1(PyProxyPK_PRE1* self) {
+  return self->publicKey->Zpub1;
+}
+
+void PyProxyPK_PRE1_SetZpub1(PyProxyPK_PRE1* self, ZZn2 Zpub1) {
+  self->publicKey->Zpub1 = Zpub1;
+}
+
 static PyGetSetDef PyProxyPK_PRE1_getsetters[] = {
-    {NULL} /* Sentinel */
+    // {"zpub1", (getter)PyProxyPK_PRE1_GetZpub1, (setter)PyProxyPK_PRE1_SetZpub1, "Zpub1", NULL},
+    {"publicKey", (getter)PyProxyPK_PRE1_GetPublicKey, (setter)PyProxyPK_PRE1_SetPublicKey, "Public Key", NULL},
+    {NULL, NULL, NULL, NULL, NULL} /* Sentinel */
 };
 
 static PyTypeObject PyProxyPK_PRE1Type = {
@@ -154,7 +281,7 @@ static PyTypeObject PyProxyPK_PRE1Type = {
     0,                                                     /* tp_iternext */
     PyProxyPK_PRE1_methods,                                /* tp_methods */
     0,                                                     /* tp_members */
-    0,                                                     /* tp_getset */
+    PyProxyPK_PRE1_getsetters,                             /* tp_getset */
     0,                                                     /* tp_base */
     0,                                                     /* tp_dict */
     0,                                                     /* tp_descr_get */

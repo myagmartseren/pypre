@@ -3,6 +3,8 @@
         "*.tmpl": "html",
         "*.tcc": "cpp",
         "compare": "cpp",
-        "type_traits": "cpp"
+        "type_traits": "cpp",
+        "system_error": "cpp",
+        "ostream": "cpp"
     }
 }

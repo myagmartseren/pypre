@@ -198,6 +198,9 @@ int main()
     testsSuccess++;
   }
 
+  cout <<"Zpub1:"<< pk1.Zpub1 << endl;
+  cout <<"Ppub2:"<< pk1.Ppub2 << endl;
+  
   cout << ++testNum << ". Generating keypair 2";
   ProxyPK_PRE1 pk2;
   ProxySK_PRE1 sk2;
